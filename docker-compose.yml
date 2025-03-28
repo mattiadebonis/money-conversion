@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  php:
+    container_name: php_container
+    build:
+      context: ./.docker/php
+      dockerfile: Dockerfile
+      args:
+        TIMEZONE: Europe/Rome
+    restart: always
+    volumes:
+      - .:/var/www/symfony/
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+    ports:
+      - "8001:8000"
+
+  db:
+    container_name: database_container
+    image: mysql
+    command: [ "--log_bin_trust_function_creators=1", "--default-authentication-plugin=mysql_native_password"]
+    restart: always
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      log_bin_trust_function_creators: 1
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "8402:3306"
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8082:8080"
+      
+volumes:
+  mysql_user:
+  mysql:
