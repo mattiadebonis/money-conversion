@@ -16,4 +16,9 @@ class MoneyService implements MoneyServiceInterface
     {
         return $first->subtract($second);
     }
+
+    public function multiply(UkMoney $value, int $factor): UkMoney
+    {
+        return $value->multiply($factor);
+    }
 }
