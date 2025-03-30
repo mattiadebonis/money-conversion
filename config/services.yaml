@@ -17,7 +17,9 @@ services:
         arguments:
             $apiToken: '%api_token%'
     
-    
+    App\Service\MoneyServiceInterface:
+        class: App\Service\MoneyService
+
     App\:
         resource: '../src/'
         exclude:
