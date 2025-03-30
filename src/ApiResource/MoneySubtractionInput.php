@@ -11,10 +11,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     operations: [
         new Post(
+            uriTemplate: '/money/subtraction',
             controller: MoneySubtractionController::class,
             read: false,
             deserialize: true,
-        
         )
     ]
 )]
