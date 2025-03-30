@@ -21,4 +21,9 @@ class MoneyService implements MoneyServiceInterface
     {
         return $value->multiply($factor);
     }
+
+    public function divide(UkMoney $value, int $divisor): array
+    {
+        return $value->divide($divisor);
+    }
 }
