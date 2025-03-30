@@ -12,4 +12,8 @@ class MoneyService implements MoneyServiceInterface
         return $first->add($second);
     }
 
+    public function subtract(UkMoney $first, UkMoney $second): UkMoney
+    {
+        return $first->subtract($second);
+    }
 }
