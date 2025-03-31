@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 
+
 #[ApiResource(
     operations: [
         new Post(
@@ -17,8 +18,8 @@ use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
             read: false,
             deserialize: true,
             openapi: new OpenApiOperation(
-                summary: 'Divisione di un valore monetario per un intero',
-                description: 'Divide un valore monetario, espresso nel formato "Xp Ys Zd", per un intero (no decimali) e restituisce il quoziente ed il resto (indicato tra parentesi). Esempio: 18p 16s 1d / 15 = 1p 5s Od (1s 1d).'
+                summary: 'Divisione di un valore monetario',
+                description: 'Divisione resto (da indicare tra parentesi) con un intero (no decimali). Esempio: 18p 16s 1d / 15 = 1p 5s 0d (1s 1d).'
             )
         )
     ]
@@ -27,10 +28,9 @@ class MoneyDivisionInput
 {
     #[Assert\NotBlank]
     #[Groups(['input'])]
-    public ?string $value = null;
+    public ?string $first = null;
 
-    #[Assert\NotNull]
-    #[Assert\Type(type: 'integer')]
+    #[Assert\NotBlank]
     #[Groups(['input'])]
-    public ?int $divisor = null;
+    public ?string $second = null;
 }
