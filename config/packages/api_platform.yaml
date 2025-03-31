@@ -1,7 +1,7 @@
 api_platform:
     title: Hello API Platform
     mapping:
-        paths: ['%kernel.project_dir%/src/ApiResource']
+        paths: ['%kernel.project_dir%/src/Entity','%kernel.project_dir%/src/ApiResource']
     version: 1.0.0
     defaults:
         stateless: true

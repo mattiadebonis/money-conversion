@@ -3,17 +3,69 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Uid\UuidV4;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
+
 
 #[ORM\Entity(repositoryClass: 'App\Repository\ProductRepository')]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/products',
+            openapi: new OpenApiOperation(
+                summary: 'Recupera la lista di tutti i prodotti',
+                description: 'Restituisce un array di prodotti, ciascuno con id, nome, costo e il catalogo associato (se presente).'
+            )
+        ),
+        new Post(
+            uriTemplate: '/products',
+            openapi: new OpenApiOperation(
+                summary: 'Crea un nuovo prodotto',
+                description: 'Crea un prodotto specificando nome, costo e l\'IRI del catalogo a cui associarlo (es. "/api/catalogs/1").'
+            )
+        ),
+        new Get(
+            uriTemplate: '/products/{id}',
+            openapi: new OpenApiOperation(
+                summary: 'Recupera un prodotto',
+                description: 'Restituisce il prodotto identificato dall\'id (identificatore univoco).'
+            )
+        ),
+        new Put(
+            uriTemplate: '/products/{id}',
+            openapi: new OpenApiOperation(
+                summary: 'Aggiorna un prodotto',
+                description: 'Aggiorna completamente un prodotto. È necessario inviare tutti i campi (nome, costo, catalog).'
+            )
+        ),
+        new Patch(
+            uriTemplate: '/products/{id}',
+            openapi: new OpenApiOperation(
+                summary: 'Aggiornamento parziale di un prodotto',
+                description: "Aggiorna uno o più campi del prodotto. Utile per rimuovere l'associazione con un catalogo (inviando 'catalog': null) oppure assegnarne uno nuovo. Imposta il Content-Type a 'application/merge-patch+json' o 'application/json'."
+            )
+        ),
+        new Delete(
+            uriTemplate: '/products/{id}',
+            openapi: new OpenApiOperation(
+                summary: 'Elimina un prodotto',
+                description: 'Elimina definitivamente il prodotto identificato dall\'id.'
+            )
+        )
+    ]
+)]
 class Product
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id = null;
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $nome = null;
@@ -22,10 +74,10 @@ class Product
     private ?float $costo = null;
 
     #[ORM\ManyToOne(targetEntity: Catalog::class, inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Catalog $catalog = null;
 
-    public function getId(): ?Uuid
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -57,7 +109,7 @@ class Product
         return $this->catalog;
     }
 
-    public function setCatalog(Catalog $catalog): self
+    public function setCatalog(?Catalog $catalog): self
     {
         $this->catalog = $catalog;
         return $this;
