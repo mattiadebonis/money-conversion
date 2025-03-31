@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\MoneyMultiplicationController;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 
 #[ApiResource(
     operations: [
@@ -15,7 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             controller: MoneyMultiplicationController::class,
             read: false,
             deserialize: true,
-            
+            openapi: new OpenApiOperation(
+                summary: 'Moltiplicazione di un valore monetario per un intero',
+                description: 'Moltiplica un valore monetario, espresso nel formato "Xp Ys Zd", per un intero (no decimali). Esempio: 5p 17s 8d * 2 = 11p 15s 4d.'
+            )
         )
     ]
 )]

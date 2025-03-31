@@ -16,6 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             controller: MoneyAdditionController::class,
             read: false,
             deserialize: true,
+            openapi: new OpenApiOperation(
+                summary: 'Somma due valori monetari',
+                description: 'Esegue la somma di due valori monetari espressi nel formato "Xp Ys Zd". Esempio: 5p 17s 8d + 3p 4s 10d = 9p 2s 6d.'
+            )
         )
     ]
 )]
